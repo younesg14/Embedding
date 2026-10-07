@@ -1,15 +1,308 @@
-div {
-  background-color: darkblue;
-  height: 400px;
-  width: 500px;
-  margin: 20px;
-  padding: 10px;
+/* =========================================================
+   Back To School — maths exercise book theme
+   Graph-paper page, red margin rule, pencil-yellow accents
+   ========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Shantell+Sans:wght@500;800&display=swap");
+
+:root {
+  /* Palette */
+  --paper: #fafcff; /* cool white page */
+  --grid: #e2ebf6; /* faint graph-paper rule */
+  --ink: #1f2d4d; /* navy ink: text and outlines */
+  --graphite: #4b5468; /* secondary text */
+  --pencil: #ffc83d; /* HB-pencil yellow: the accent */
+  --margin: #e5484d; /* exercise-book margin line */
+  --red-pen: #c22a30; /* red text that passes contrast */
+  --surface: #ffffff; /* panels sitting on the page */
+  --rule: #c9d6e8; /* panel borders */
+  --highlight: rgb(255 200 61 / 0.6);
+  --on-pencil: #1f2d4d;
+
+  /* Type */
+  --font-display: "Shantell Sans", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+
+  /* Spacing and shape */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --radius: 14px;
+  --grid-size: 28px;
+
+  color-scheme: light dark;
 }
 
-.redclass {
-  background-color: crimson;
+/* Dark mode: same notebook, printed as a blueprint */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #13213b;
+    --grid: rgb(170 195 235 / 0.08);
+    --ink: #e9eff9;
+    --graphite: #a8b4c9;
+    --margin: #ff7579;
+    --red-pen: #ff8f92;
+    --surface: #1b2c4c;
+    --rule: #2f4469;
+    --highlight: rgb(255 200 61 / 0.38);
+  }
 }
+
+/* ---------- Page ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+body {
+  position: relative;
+  max-width: 960px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4.5rem) var(--gutter) 4rem
+    calc(var(--gutter) + 1.5rem);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The red margin line down the left of the page */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 var(--gutter);
+  width: 2px;
+  background: var(--margin);
+  opacity: 0.55;
+}
+
+::selection {
+  background: var(--highlight);
+  color: inherit;
+}
+
+/* ---------- Type ---------- */
+
+/* Headline with a highlighter stroke that swipes in on load */
+h1 {
+  display: inline;
+  margin: 0;
+  padding: 0 0.12em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  background-image: linear-gradient(var(--highlight), var(--highlight));
+  background-repeat: no-repeat;
+  background-position: 0 85%;
+  background-size: 100% 0.45em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: highlight-swipe 700ms cubic-bezier(0.65, 0, 0.35, 1) 250ms both;
+}
+
+@keyframes highlight-swipe {
+  from {
+    background-size: 0% 0.45em;
+  }
+}
+
+h2 {
+  margin: 3rem 0 0.5rem;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--graphite);
+}
+
+p {
+  max-width: 65ch;
+  margin: 0 0 1rem;
+}
+
+/* ---------- Filter controls ---------- */
+
+fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 2.5rem 0;
+  padding: 1rem 1.25rem 1.375rem;
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--graphite);
+}
+
+/* Tactile buttons: they lift on hover and press down on click */
+input[type="button"] {
+  --btn-bg: var(--surface);
+  --btn-fg: var(--ink);
+  --btn-edge: var(--ink);
+  --btn-hover-bg: color-mix(in srgb, var(--pencil) 22%, var(--surface));
+
+  appearance: none;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.8em 1.25em;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1.5px solid var(--btn-edge);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 var(--btn-edge);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease,
+    background-color 160ms ease;
+}
+
+input[type="button"]:hover {
+  background: var(--btn-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--btn-edge);
+}
+
+input[type="button"]:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--btn-edge);
+  transition-duration: 40ms;
+}
+
+input[type="button"]:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+input[type="button"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 3px 0 var(--btn-edge);
+}
+
+/* The filter itself is the main action */
+#onw {
+  --btn-bg: var(--pencil);
+  --btn-fg: var(--on-pencil);
+  --btn-hover-bg: color-mix(in srgb, var(--pencil) 70%, #fff);
+}
+
+/* Undo is quieter and sits at the far end */
+#undo {
+  --btn-fg: var(--graphite);
+  --btn-edge: var(--graphite);
+  margin-left: auto;
+}
+
+/* ---------- Practice elements ---------- */
+
+.redclass {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--margin);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--margin) 9%, var(--surface));
+}
+
+/* Reads like a teacher's note in red pen */
 #special {
-  background-color: darkcyan;
-  height: 200px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--red-pen);
+  background: transparent;
+}
+
+body > span {
+  display: inline-block;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0.25em 0.75em;
+  font-size: 0.95rem;
+  background: var(--surface);
+  border: 1.5px dashed var(--rule);
+  border-radius: 999px;
+}
+
+/* Lists sit on ruled lines */
+body > ul {
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+li::marker {
+  color: var(--margin);
+}
+
+/* ---------- Tableau embed ---------- */
+
+/* The dashboard sits on a pencil-yellow sheet tucked behind it */
+tableau-viz {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 2.5rem 0 1rem;
+  padding: 12px;
+  overflow-x: auto;
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 10px 10px 0 -1.5px var(--pencil), 10px 10px 0 0 var(--ink);
+}
+
+tableau-viz iframe {
+  display: block;
+  border: 0;
+  border-radius: 8px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 640px) {
+  tableau-viz {
+    padding: 8px;
+    box-shadow: 6px 6px 0 -1.5px var(--pencil), 6px 6px 0 0 var(--ink);
+  }
+
+  #undo {
+    margin-left: 0;
+  }
+}
+
+/* ---------- Motion preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
