@@ -1,0 +1,15 @@
+div {
+  background-color: darkblue;
+  height: 400px;
+  width: 500px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.redclass {
+  background-color: crimson;
+}
+#special {
+  background-color: darkcyan;
+  height: 200px;
+}
